@@ -11,7 +11,7 @@
         - user: omero
           password: omero
           databases: [omero]
-      postgresql_version: "9.6"
+      postgresql_version: "10"
 
     - role: ome.omero_server
       ice_python_wheel: "https://github.com/ome/zeroc-ice-py-centos7/releases/\
