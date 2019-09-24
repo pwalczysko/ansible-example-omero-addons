@@ -15,8 +15,9 @@ Vagrant.configure("2") do |config|
     vb.cpus = "2"
   end
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "playbook.yml"
-    ansible.galaxy_role_file = "requirements.yml"
-  end
+  # Uncomment this to automatically run Ansible
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.playbook = "playbook.yml"
+  #   ansible.galaxy_role_file = "requirements.yml"
+  # end
 end
