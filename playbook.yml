@@ -5,17 +5,28 @@
   roles:
 
     - role: ome.postgresql
-      postgresql_install_server: true
       postgresql_databases:
         - name: omero
       postgresql_users:
         - user: omero
           password: omero
-          databases: [omero]
-      postgresql_version: "11"
+          databases:
+            - omero
 
     - role: ome.omero_server
+      omero_server_rootpassword: omero
       omero_server_release: latest
+      omero_server_python_addons:
+        # Needed for OMERO.figure export
+        - markdown
+        - reportlab
+      # Uncomment to scale up for more users.
+      # Disabling permits testing on smaller VMs.
+      # omero_server_config_set:
+      #   omero.db.poolsize: 50
+      #   omero.jvmcfg.percent.blitz: 50
+      #   omero.jvmcfg.percent.indexer: 20
+      #   omero.jvmcfg.percent.pixeldata: 20
 
     - role: ome.omero_web
       omero_web_config_set:
@@ -26,33 +37,93 @@
         omero.web.public.url_filter: "^/(webadmin/myphoto/|webclient/\
           (?!(action|logout|annotate_(file|tags|comment|rating|map)|\
           script_ui|ome_tiff|figure_script))|\
-          webgateway/(?!(archived_files|download_as)))"
+          webgateway/(?!(archived_files|download_as))\
+          |iviewer/|mapr/|figure/)"
+        # Uncomment to configure SSL certificates
+        # omero.web.nginx_server_extra_config:
+        #   - "listen 443 ssl;"
+        #   - "ssl_certificate {{ ssl_certificate_public_path }};"
+        #   - "ssl_certificate_key {{ ssl_certificate_key_path }};"
+      omero_web_apps_packages:
+        - omero-figure
+        - omero-iviewer
+        - omero-mapr
+        - omero-parade
+      omero_web_apps_names:
+        - omero_figure
+        - omero_iviewer
+        - omero_mapr
+        - omero_parade
+      omero_web_apps_config_set:
+        omero.web.viewer.view: omero_iviewer.views.index
+        omero.web.mapr.config:
+          - menu: anyvalue
+            config:
+              default:
+                - Any Value
+              all: []
+              ns:
+                - openmicroscopy.org/omero/client/mapAnnotation
+              label: Any
+      omero_web_apps_config_append:
+        omero.web.open_with:
+          - - omero_iviewer
+            - omero_iviewer_index
+            - supported_objects:
+                - images
+                - dataset
+                - well
+              script_url: omero_iviewer/openwith.js
+              label: OMERO.iviewer
+          - - omero_figure
+            - new_figure
+            - supported_objects:
+                - images
+              target: _blank
+              label: OMERO.figure
+        omero.web.ui.center_plugins:
+          - - Parade
+            - omero_parade/init.js.html
+            - omero_parade
+      omero_web_apps_top_links:
+        - label: Figure
+          link: figure_index
+          attrs:
+            title: Open Figure in new tab
+            target: _blank
+        - label: Any Value
+          link:
+            viewname: maprindex_anyvalue
+          attrs:
+            title: Find Any Value
 
-
-    # This role only works on OMERO 5.3+
     - role: ome.omero_user
       omero_user_bin_omero: /opt/omero/server/OMERO.server/bin/omero
       omero_user_system: omero-server
       omero_user_admin_user: root
       omero_user_admin_pass: omero
       omero_group_create:
-        - name: demo
+        - name: public
           type: read-only
       omero_user_create:
         - login: public
           firstname: public
           lastname: user
           password: "{{ omero_web_public_password }}"
-          groups: "--group-name demo"
+          groups: "--group-name public"
+
+  tasks:
+
+    - name: Copy Figure_To_Pdf.py script
+      become: true
+      become_user: omero-server
+      copy:
+        dest:
+          /opt/omero/server/OMERO.server/lib/scripts/omero/figure_scripts/Figure_To_Pdf.py
+        remote_src: true
+        src:
+          /opt/omero/web/venv3/lib/python3.6/site-packages/omero_figure/scripts/omero/figure_scripts/Figure_To_Pdf.py
 
   vars:
+    postgresql_version: "11"
     omero_web_public_password: public
-    ## PRODUCTION VARIABLES: For a production system,
-    ## remove "_DISABLED" from the following property
-    ## in order to scale up for more users. Disabling
-    ## permits testing on smaller VMs.
-    omero_server_config_set_DISABLED:
-      omero.db.poolsize: 50
-      omero.jvmcfg.percent.blitz: 50
-      omero.jvmcfg.percent.indexer: 20
-      omero.jvmcfg.percent.pixeldata: 20
