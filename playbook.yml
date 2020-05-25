@@ -4,6 +4,14 @@
 # - hosts: all
 - hosts: omero-public
 
+  pre_tasks:
+
+    - name: Ensure openssl is installed
+      become: true
+      package:
+        name: openssl
+        state: present
+
   roles:
 
     - role: ome.postgresql
