@@ -1,7 +1,9 @@
 ---
 # Install OMERO.server and OMERO.web with a public user on localhost
 
-- hosts: all
+# - hosts: all
+- hosts: omero-public
+
   roles:
 
     - role: ome.postgresql
