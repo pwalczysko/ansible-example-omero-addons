@@ -1,0 +1,32 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+  options:
+    config-file: .yamllint.yml
+platforms:
+  - name: omero-public
+    image: leandelivery/docker-systemd:ubuntu-18.04
+    command: /sbin/init
+    privileged: true
+    tmpfs:
+      - /sys/fs/cgroup
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  playbooks:
+    prepare: test-dependencies.yml
+    converge: ../../playbook.yml
+scenario:
+  name: ubuntu1804
+verifier:
+  name: testinfra
+  directory: ../resources/tests/
+  lint:
+    name: flake8

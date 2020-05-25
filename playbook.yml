@@ -29,9 +29,13 @@
       #   omero.jvmcfg.percent.blitz: 50
       #   omero.jvmcfg.percent.indexer: 20
       #   omero.jvmcfg.percent.pixeldata: 20
-      ## Uncomment for Ubuntu 18.04
-      # omero_server_systemd_require_network: false
-      # omero_server_selfsigned_certificates: true
+
+      # These two are optional on Centos, required on Ubuntu
+      # For more information on why omero_server_selfsigned_certificates
+      # is required see
+      # https://forum.image.sc/t/omero-icessl-unable-to-set-ciphers/30704
+      omero_server_systemd_require_network: false
+      omero_server_selfsigned_certificates: true
 
     - role: ome.omero_web
       omero_web_config_set:
