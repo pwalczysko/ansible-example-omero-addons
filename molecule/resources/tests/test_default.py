@@ -9,6 +9,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 OMERO = '/opt/omero/server/OMERO.server/bin/omero'
+ROOT_PASSWORD = 'ChangeMe'
 
 
 def test_db_running_and_enabled(host):
@@ -29,7 +30,8 @@ def test_omero_login(host):
     env = 'OMERO_USERDIR=/tmp/omero-{}'.format(time())
     with host.sudo('omero-server'):
         host.check_output(
-            '%s %s login -C -s localhost -u root -w omero' % (env, OMERO))
+            '%s %s login -C -s localhost -u root -w %s' % (
+                env, OMERO, ROOT_PASSWORD))
 
 
 @pytest.mark.parametrize('name', ['omero-web', 'nginx'])
@@ -40,8 +42,10 @@ def test_services_running_and_enabled(host, name):
 
 
 def test_omero_web_first_page(host):
-    out = host.check_output('curl -fsL http://localhost/')
-    assert 'omero:4064' in out
+    out1 = host.check_output('curl -fsL http://localhost')
+    assert 'WEBCLIENT.active_group_id' in out1
+    out2 = host.check_output('curl -fsL http://localhost/webclient/login')
+    assert 'omero:4064' in out2
 
 
 def get_cookie(cookietxt, name):
@@ -70,7 +74,7 @@ def test_omero_web_login(host):
     data = '&'.join([
         'csrfmiddlewaretoken=%s' % csrf,
         'username=root',
-        'password=ChangeMe',
+        'password=%s' % ROOT_PASSWORD,
         'server=1',
         'url=%2Fwebclient%2F',
         ])
