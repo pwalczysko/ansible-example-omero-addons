@@ -20,13 +20,16 @@
         # Needed for OMERO.figure export
         - markdown
         - reportlab
-      # Uncomment to scale up for more users.
+      ## Uncomment to scale up for more users.
       # Disabling permits testing on smaller VMs.
       # omero_server_config_set:
       #   omero.db.poolsize: 50
       #   omero.jvmcfg.percent.blitz: 50
       #   omero.jvmcfg.percent.indexer: 20
       #   omero.jvmcfg.percent.pixeldata: 20
+      ## Uncomment for Ubuntu 18.04
+      # omero_server_systemd_require_network: false
+      # omero_server_selfsigned_certificates: true
 
     - role: ome.omero_web
       omero_web_config_set:
