@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
   #   ansible.playbook = "playbook.yml"
   #   ansible.galaxy_role_file = "requirements.yml"
   #   ansible.groups = {
-  #     "omero-public" => ["omero"]
+  #     "omero-addons" => ["omero"]
   #   }
   # end
 end

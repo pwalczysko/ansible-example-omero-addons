@@ -2,7 +2,7 @@
 # Install OMERO.server and OMERO.web with a public user on localhost
 
 # - hosts: all
-- hosts: omero-public
+- hosts: omero-addons
 
   pre_tasks:
 

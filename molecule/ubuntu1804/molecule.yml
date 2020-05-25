@@ -10,7 +10,7 @@ lint:
   options:
     config-file: .yamllint.yml
 platforms:
-  - name: omero-public
+  - name: omero-addons
     image: leandelivery/docker-systemd:ubuntu-18.04
     command: /sbin/init
     privileged: true

@@ -10,7 +10,7 @@ lint:
   options:
     config-file: .yamllint.yml
 platforms:
-  - name: omero-public
+  - name: omero-addons
     image: centos/systemd:latest
     privileged: true
     command: /sbin/init

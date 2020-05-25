@@ -1,6 +1,6 @@
 ---
 all:
   hosts:
-    omero-public:
+    omero-addons:
       # Change this to the IP of the server to be deployed
       ansible_host: 192.168.33.12

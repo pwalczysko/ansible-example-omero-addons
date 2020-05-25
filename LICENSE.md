@@ -1,4 +1,4 @@
-Copyright (c) 2019, University of Dundee
+Copyright (c) 2020, University of Dundee
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
