@@ -5,6 +5,8 @@ driver:
   name: docker
 lint:
   name: yamllint
+  options:
+    config-file: .yamllint.yml
 platforms:
   - name: omero-public
     image: centos/systemd
