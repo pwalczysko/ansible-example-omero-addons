@@ -9,5 +9,6 @@
 - src: ome.omero_web
   version: 3.1.0
 
-- src: ome.omero_user
-  version: 0.2.0
+- name: ome.omero_user
+  src: "https://github.com/ome/ansible-role-omero-user/archive/\
+    ede99d4e3a98453216149dd3e5d631e976fb4540.tar.gz"
