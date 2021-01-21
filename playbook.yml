@@ -135,6 +135,7 @@
       copy:
         dest:
           /opt/omero/server/OMERO.server/lib/scripts/omero/figure_scripts/Figure_To_Pdf.py
+        mode: 0644
         remote_src: true
         src:
           /opt/omero/web/venv3/lib/python3.6/site-packages/omero_figure/scripts/omero/figure_scripts/Figure_To_Pdf.py
