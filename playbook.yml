@@ -134,15 +134,14 @@
 
   tasks:
 
-    - name: Copy Figure_To_Pdf.py script
+    - name: Download the Figure_To_Pdf.py script
       become: true
       become_user: omero-server
-      copy:
+      get_url:
         dest:
           /opt/omero/server/OMERO.server/lib/scripts/omero/figure_scripts/Figure_To_Pdf.py
         mode: 0644
-        remote_src: true
-        src:
+        url:
           https://raw.githubusercontent.com/ome/omero-figure/HEAD/omero_figure/scripts/omero/figure_scripts/Figure_To_Pdf.py
 
 
