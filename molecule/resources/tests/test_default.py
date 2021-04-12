@@ -13,10 +13,12 @@ ROOT_PASSWORD = 'ChangeMe'
 
 
 def test_db_running_and_enabled(host):
-    service_centos = host.service('postgresql-11')
-    service_ubuntu = host.service('postgresql@11-main')
-    assert service_centos.is_running or service_ubuntu.is_running
-    assert service_centos.is_enabled or service_ubuntu.is_enabled
+    if host.system_info.distribution == 'ubuntu':
+        service = host.service('postgresql@11-main')
+    else:
+        service = host.service('postgresql-11')
+    assert service.is_running
+    assert service.is_enabled
 
 
 def test_srv_running_and_enabled(host):
