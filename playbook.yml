@@ -8,17 +8,7 @@
       when: ansible_facts['os_family'] == "Debian"
 
 - hosts: omero-addons
-
-  pre_tasks:
-
-    - name: Ensure openssl is installed
-      become: true
-      package:
-        name: openssl
-        state: present
-
   roles:
-
     - role: ome.postgresql
       postgresql_databases:
         - name: omero
@@ -42,11 +32,6 @@
       #   omero.jvmcfg.percent.indexer: 20
       #   omero.jvmcfg.percent.pixeldata: 20
 
-      # These two are optional on Centos, required on Ubuntu
-      # For more information on why omero_server_selfsigned_certificates
-      # is required see
-      # https://forum.image.sc/t/omero-icessl-unable-to-set-ciphers/30704
-      omero_server_systemd_require_network: false
       omero_server_selfsigned_certificates: true
 
     - role: ome.omero_web
