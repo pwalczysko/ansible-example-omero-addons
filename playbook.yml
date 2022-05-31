@@ -23,7 +23,7 @@
       omero_server_python_addons:
         # Needed for OMERO.figure export
         - markdown
-        - reportlab
+        - "reportlab<3.6"
       ## Uncomment to scale up for more users.
       # Disabling permits testing on smaller VMs.
       # omero_server_config_set:
