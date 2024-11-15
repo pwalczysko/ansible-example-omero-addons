@@ -11,7 +11,7 @@ lint: |
     flake8
 platforms:
   - name: omero-addons
-    image: eniocarboni/docker-rockylinux-systemd:9
+    image: eniocarboni/docker-ubuntu-systemd:22.04
     image_version: latest
     command: /sbin/init
     privileged: true
@@ -44,7 +44,7 @@ provisioner:
   lint:
     name: ansible-lint
 scenario:
-  name: rockylinux9
+  name: ubuntu2204
   test_sequence:
     # dependency must come first, otherwise the first "destroy" errors
     - dependency
