@@ -1,8 +1,0 @@
----
-extends: default
-rules:
-  # Playbook comments are indented for legibility,this disagrees with
-  # yamllint defaults
-  comments-indentation:
-    ignore: |
-      playbook.yml
