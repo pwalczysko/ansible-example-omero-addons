@@ -10,7 +10,7 @@ lint: |
     ansible-lint
     flake8
 platforms:
-  - name: ome-demoserver
+  - name: omero-addons
     image: eniocarboni/docker-rockylinux-systemd:9
     image_version: latest
     command: /sbin/init
@@ -21,12 +21,11 @@ platforms:
     groups:
       - docker-hosts
       - omero-py3
-      - ome-demoservers
 provisioner:
   name: ansible
   playbooks:
     prepare: ../prepare.yml
-    converge: ../../omero/ome-demoserver.yml
+    converge: ../../playbook.yml
   options:
     v: true
     diff: true
@@ -45,7 +44,7 @@ provisioner:
   lint:
     name: ansible-lint
 scenario:
-  name: ome-demoserver
+  name: rockylinux9
   test_sequence:
     # dependency must come first, otherwise the first "destroy" errors
     - dependency
@@ -61,3 +60,4 @@ scenario:
     - destroy
 verifier:
   name: testinfra
+  directory: ../resources/tests/
